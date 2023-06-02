@@ -17,7 +17,7 @@ class App extends React.Component {
       cardDeck: makeShuffledDeck(),
       // currCards holds the cards from the current round
       currCards: [],
-      wins: { playerWin: 0, computerWin: 0, draw: 0, gameCount: 0 },
+      wins: { player1Win: 0, player2Win: 0, draw: 0, gameCount: 0 },
       totalRounds: 0,
       reset: false,
     };
@@ -28,34 +28,33 @@ class App extends React.Component {
     if (this.state.cardDeck.length < 10) {
       this.resetGame();
       this.setState({ reset: true });
-      console.log(this.state.reset);
       return;
-    } else {
+    } else if (this.state.reset) {
       this.setState({ reset: false });
-      console.log(this.state.reset);
     }
+    console.log(this.state.reset);
     const newCurrCards = [this.state.cardDeck.pop(), this.state.cardDeck.pop()];
     this.setState(
       {
         currCards: newCurrCards,
       },
       () => {
-        const player = 0;
-        const computer = 1;
+        const player1 = 0;
+        const player2 = 1;
         const draw = 2;
         if (
-          this.state.currCards[player].rank <
-          this.state.currCards[computer].rank
+          this.state.currCards[player1].rank <
+          this.state.currCards[player2].rank
         ) {
-          this.resultsWin(computer);
+          this.resultsWin(player2);
         } else if (
-          this.state.currCards[player].rank >
-          this.state.currCards[computer].rank
+          this.state.currCards[player1].rank >
+          this.state.currCards[player2].rank
         ) {
-          this.resultsWin(player);
+          this.resultsWin(player1);
         } else if (
-          this.state.currCards[player].rank ===
-          this.state.currCards[computer].rank
+          this.state.currCards[player1].rank ===
+          this.state.currCards[player2].rank
         ) {
           this.resultsWin(draw);
         }
@@ -66,9 +65,9 @@ class App extends React.Component {
   resultsWin = (index) => {
     let winArray = { ...this.state.wins };
     if (index === 0) {
-      winArray.playerWin += 1;
+      winArray.player1Win += 1;
     } else if (index === 1) {
-      winArray.computerWin += 1;
+      winArray.player2Win += 1;
     } else if (index === 2) {
       winArray.draw += 1;
     }
@@ -80,18 +79,18 @@ class App extends React.Component {
 
   checkValue = () => {
     let winner = "";
-    const player = 0;
-    const computer = 1;
+    const player1 = 0;
+    const player2 = 1;
     if (
-      this.state.currCards[player].rank < this.state.currCards[computer].rank
+      this.state.currCards[player1].rank < this.state.currCards[player2].rank
     ) {
-      winner = "The winner is Computer!";
+      winner = "The winner is Player 2!";
     } else if (
-      this.state.currCards[player].rank > this.state.currCards[computer].rank
+      this.state.currCards[player1].rank > this.state.currCards[player2].rank
     ) {
-      winner = "The winner is Player!";
+      winner = "The winner is Player 1!";
     } else if (
-      this.state.currCards[player].rank === this.state.currCards[computer].rank
+      this.state.currCards[player1].rank === this.state.currCards[player2].rank
     ) {
       winner = "This is a Draw.";
     }
@@ -99,39 +98,52 @@ class App extends React.Component {
   };
 
   resetGame = () => {
+    let newWins = { player1Win: 0, player2Win: 0, draw: 0, gameCount: 0 };
     this.setState({
       // Set default value of card deck to new shuffled deck
       cardDeck: makeShuffledDeck(),
       // currCards holds the cards from the current round
       currCards: [],
-      wins: { playerWin: 0, computerWin: 0, draw: 0, gameCount: 0 },
+      wins: newWins,
     });
+    console.log(newWins);
   };
 
   render() {
-    const currCardElems = this.state.currCards.map(({ name, suit }, index) => (
-      // Give each list element a unique key
-      <div key={`${name}${suit}`}>
-        Player {index + 1}: {name} of {suit}
-      </div>
-    ));
-
+    const currCardElems = this.state.currCards.map(
+      ({ name, suit, imgSrc }, index) => (
+        // Give each list element a unique key
+        <Row
+          xs="7"
+          className="justify-content-md-center"
+          key={`Rowplayer${index}`}
+        >
+          <Col>Player {index + 1}</Col>
+          <Col>
+            <img
+              className="card"
+              src={require(`${imgSrc}`)}
+              alt={`${name} of ${suit}`}
+            />
+          </Col>
+        </Row>
+      )
+    );
     const printLeaderBoard = (
-      <Container fluid>
-        <Row xs="6" className="justify-content-md-center">
+      <Container>
+        <Row xs="5" className="justify-content-md-center">
           <Col>Player 1</Col>
-          <Col>{this.state.wins.playerWin}</Col>
+          <Col>{this.state.wins.player1Win}</Col>
         </Row>
-        <Row xs="6" className="justify-content-md-center">
+        <Row xs="5" className="justify-content-md-center">
           <Col>Player 2</Col>
-          <Col>{this.state.wins.computerWin}</Col>
+          <Col>{this.state.wins.player2Win}</Col>
         </Row>
-        <Row xs="6" className="justify-content-md-center">
+        <Row xs="5" className="justify-content-md-center">
           <Col>Draw</Col>
           <Col>{this.state.wins.draw}</Col>
         </Row>
-
-        <Row xs="6" className="justify-content-md-center">
+        <Row xs="5" className="justify-content-md-center">
           <Col>Round</Col>
           <Col>{this.state.wins.gameCount}</Col>
         </Row>
@@ -165,13 +177,13 @@ class App extends React.Component {
         <div className="App">
           <header className="App-header">
             <h3>High Card 🚀</h3> <br />
-            {currCardElems}
+            <Container>{currCardElems}</Container>
             <br />
             {printResults}
             <br />
             {printLeaderBoard}
             <br />
-            <Container flex>
+            <Container>
               <Row xs="6" className="justify-content-md-center">
                 <Col>
                   <Button variant="primary" onClick={this.dealCards}>
