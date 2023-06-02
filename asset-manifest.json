@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/high-card-bootcamp/static/css/main.aa6f42ba.css",
-    "main.js": "/high-card-bootcamp/static/js/main.e7d6932a.js",
+    "main.js": "/high-card-bootcamp/static/js/main.fc8538e2.js",
     "static/media/jackclubs.svg": "/high-card-bootcamp/static/media/jackclubs.b801c5a7a13824b41dc2.svg",
     "static/media/jackspades.svg": "/high-card-bootcamp/static/media/jackspades.1a6f34e2a3c4b0afc4e6.svg",
     "static/media/kinghearts.svg": "/high-card-bootcamp/static/media/kinghearts.3d6b1be6a2e9b0dc4504.svg",
@@ -69,10 +69,10 @@
     "static/media/NEWS.txt": "/high-card-bootcamp/static/media/NEWS.05744dc76e5fdfd21320.txt",
     "static/media/AUTHORS.txt": "/high-card-bootcamp/static/media/AUTHORS.85f5e98cca0b30503991.txt",
     "main.aa6f42ba.css.map": "/high-card-bootcamp/static/css/main.aa6f42ba.css.map",
-    "main.e7d6932a.js.map": "/high-card-bootcamp/static/js/main.e7d6932a.js.map"
+    "main.fc8538e2.js.map": "/high-card-bootcamp/static/js/main.fc8538e2.js.map"
   },
   "entrypoints": [
     "static/css/main.aa6f42ba.css",
-    "static/js/main.e7d6932a.js"
+    "static/js/main.fc8538e2.js"
   ]
 }
