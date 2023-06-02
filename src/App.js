@@ -17,8 +17,8 @@ class App extends React.Component {
       cardDeck: makeShuffledDeck(),
       // currCards holds the cards from the current round
       currCards: [],
-      wins: { player1Win: 0, player2Win: 0, draw: 0, gameCount: 0 },
-      totalRounds: 0,
+      wins: { player1Win: 0, player2Win: 0, gameCount: 0 },
+      totalRounds: 1,
       reset: false,
     };
   }
@@ -32,7 +32,6 @@ class App extends React.Component {
     } else if (this.state.reset) {
       this.setState({ reset: false });
     }
-    console.log(this.state.reset);
     const newCurrCards = [this.state.cardDeck.pop(), this.state.cardDeck.pop()];
     this.setState(
       {
@@ -41,7 +40,6 @@ class App extends React.Component {
       () => {
         const player1 = 0;
         const player2 = 1;
-        const draw = 2;
         if (
           this.state.currCards[player1].rank <
           this.state.currCards[player2].rank
@@ -56,7 +54,23 @@ class App extends React.Component {
           this.state.currCards[player1].rank ===
           this.state.currCards[player2].rank
         ) {
-          this.resultsWin(draw);
+          if (this.state.currCards[0].suit === "spades") {
+            this.resultsWin(player1);
+          } else if (this.state.currCards[1].suit === "spades") {
+            this.resultsWin(player2);
+          } else if (this.state.currCards[0].suit === "hearts") {
+            this.resultsWin(player1);
+          } else if (this.state.currCards[1].suit === "hearts") {
+            this.resultsWin(player2);
+          } else if (this.state.currCards[0].suit === "clubs") {
+            this.resultsWin(player1);
+          } else if (this.state.currCards[1].suit === "clubs") {
+            this.resultsWin(player2);
+          } else if (this.state.currCards[0].suit === "diamonds") {
+            this.resultsWin(player1);
+          } else {
+            this.resultsWin(player2);
+          }
         }
       }
     );
@@ -68,8 +82,6 @@ class App extends React.Component {
       winArray.player1Win += 1;
     } else if (index === 1) {
       winArray.player2Win += 1;
-    } else if (index === 2) {
-      winArray.draw += 1;
     }
     winArray.gameCount += 1;
     this.setState({
@@ -92,21 +104,37 @@ class App extends React.Component {
     } else if (
       this.state.currCards[player1].rank === this.state.currCards[player2].rank
     ) {
-      winner = "This is a Draw.";
+      if (this.state.currCards[0].suit === "spades") {
+        winner = "The winner is Player 1!";
+      } else if (this.state.currCards[1].suit === "spades") {
+        winner = "The winner is Player 2!";
+      } else if (this.state.currCards[0].suit === "hearts") {
+        winner = "The winner is Player 1!";
+      } else if (this.state.currCards[1].suit === "hearts") {
+        winner = "The winner is Player 2!";
+      } else if (this.state.currCards[0].suit === "clubs") {
+        winner = "The winner is Player 1!";
+      } else if (this.state.currCards[1].suit === "clubs") {
+        winner = "The winner is Player 2!";
+      } else if (this.state.currCards[0].suit === "diamonds") {
+        winner = "The winner is Player 1!";
+      } else {
+        winner = "The winner is Player 2!";
+      }
     }
     return winner;
   };
 
   resetGame = () => {
-    let newWins = { player1Win: 0, player2Win: 0, draw: 0, gameCount: 0 };
+    let newWins = { player1Win: 0, player2Win: 0, gameCount: 0 };
     this.setState({
       // Set default value of card deck to new shuffled deck
       cardDeck: makeShuffledDeck(),
       // currCards holds the cards from the current round
       currCards: [],
       wins: newWins,
+      totalRounds: this.state.totalRounds + 1,
     });
-    console.log(newWins);
   };
 
   render() {
@@ -140,12 +168,12 @@ class App extends React.Component {
           <Col>{this.state.wins.player2Win}</Col>
         </Row>
         <Row xs="5" className="justify-content-md-center">
-          <Col>Draw</Col>
-          <Col>{this.state.wins.draw}</Col>
+          <Col>No. of Rounds</Col>
+          <Col>{this.state.wins.gameCount}</Col>
         </Row>
         <Row xs="5" className="justify-content-md-center">
-          <Col>Round</Col>
-          <Col>{this.state.wins.gameCount}</Col>
+          <Col>No. of Games</Col>
+          <Col>{this.state.totalRounds}</Col>
         </Row>
       </Container>
     );
